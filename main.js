@@ -17,7 +17,7 @@ let possibleColors = ["blue", "red", "green", "purple", "teal"]
 
 // #endregion
 
-function startGame(){
+function startGame() {
   document.getElementById("game-controls").classList.remove("hidden")
   document.getElementById("main-controls").classList.add("hidden")
   document.getElementById("scoreboard").classList.add("hidden")
@@ -25,23 +25,23 @@ function startGame(){
   setTimeout(stopGame, gameLength)
 }
 
-function startClock(){
+function startClock() {
   timeRemaining = gameLength
   drawClock()
   clockId = setInterval(drawClock, 1000)
 }
 
-function stopClock(){
+function stopClock() {
   clearInterval(clockId)
 }
 
-function drawClock(){
+function drawClock() {
   let countdownElem = document.getElementById("countdown")
   countdownElem.innerText = (timeRemaining / 1000).toString()
   timeRemaining -= 1000
 }
 
-function inflate(){
+function inflate() {
   clickCount++
   height += inflationRate
   width += inflationRate
@@ -49,8 +49,8 @@ function inflate(){
   draw()
 }
 
-function checkBalloonPop(){
-  if(height >= maxSize) {
+function checkBalloonPop() {
+  if (height >= maxSize) {
     console.log("pop the balloon")
     let balloonElement = document.getElementById("balloon")
     balloonElement.classList.remove(currentColor)
@@ -65,12 +65,12 @@ function checkBalloonPop(){
   }
 }
 
-function getRandomColor(){
+function getRandomColor() {
   let i = Math.floor(Math.random() * possibleColors.length);
   currentColor = possibleColors[i]
 }
 
-function draw(){
+function draw() {
   let balloonElement = document.getElementById("balloon")
   let clickCountElem = document.getElementById("click-count")
   let popCountElem = document.getElementById("pop-count")
@@ -79,14 +79,14 @@ function draw(){
 
   balloonElement.style.height = height + "px"
   balloonElement.style.width = width + "px"
-  
+
   clickCountElem.innerText = clickCount.toString()
   popCountElem.innerText = currentPopCount.toString()
   highPopCountElem.innerText = currentPlayer.topScore.toString()
   playerNameElem.innerText = currentPlayer.name
 }
 
-function stopGame(){
+function stopGame() {
   console.log("the game is over")
 
   document.getElementById("game-controls").classList.add("hidden")
@@ -97,7 +97,7 @@ function stopGame(){
   height = 120
   width = 100
 
-  if(currentPopCount > currentPlayer.topScore){
+  if (currentPopCount > currentPlayer.topScore) {
     currentPlayer.topScore = currentPopCount
     savePlayers()
   }
@@ -115,44 +115,44 @@ function stopGame(){
 let players = []
 loadPlayers()
 
-function setPlayer(event){
-event.preventDefault()
-let form = event.target
+function setPlayer(event) {
+  event.preventDefault()
+  let form = event.target
 
-let playerName = form.playerName.value
+  let playerName = form.playerName.value
 
-currentPlayer = players.find(player => player.name == playerName)
+  currentPlayer = players.find(player => player.name == playerName)
 
-if(!currentPlayer){
-    currentPlayer = {name: playerName, topScore: 0}
+  if (!currentPlayer) {
+    currentPlayer = { name: playerName, topScore: 0 }
     players.push(currentPlayer)
     savePlayers()
+  }
+
+  form.reset()
+  document.getElementById("game").classList.remove("hidden")
+  form.classList.add("hidden")
+  draw()
+  drawScoreboard()
 }
 
-form.reset()
-document.getElementById("game").classList.remove("hidden")
-form.classList.add("hidden")
-draw()
-drawScoreboard()
-}
-
-function changePlayer(){
+function changePlayer() {
   document.getElementById("player-form").classList.remove("hidden")
   document.getElementById("game").classList.add("hidden")
 }
 
-function savePlayers(){
+function savePlayers() {
   window.localStorage.setItem("players", JSON.stringify(players))
 }
 
-function loadPlayers(){
+function loadPlayers() {
   let playersData = JSON.parse(window.localStorage.getItem("players"))
-  if(playersData){
+  if (playersData) {
     players = playersData
   }
 }
 
-function drawScoreboard(){
+function drawScoreboard() {
   let template = ""
 
   players.sort((p1, p2) => p2.topScore - p1.topScore)
