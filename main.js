@@ -57,6 +57,7 @@ function checkBalloonPop() {
     getRandomColor()
     balloonElement.classList.add(currentColor)
 
+    // @ts-ignore
     document.getElementById("pop-sound").play()
 
     currentPopCount++
